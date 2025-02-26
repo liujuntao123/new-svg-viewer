@@ -9,3 +9,4 @@
 - SVG代码的语法高亮
 - 界面干净，纯免费，无广告
 
+![PixPin_2025-02-26_17-32-26](https://github.com/user-attachments/assets/b68058b6-49ab-46cd-b3f1-df979d9aeb96)
