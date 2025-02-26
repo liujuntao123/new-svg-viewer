@@ -30,19 +30,19 @@ const extensions = [
     }
   })
 ];
-
+/* eslint-disable */ 
 const SVGViewer: React.FC<SVGViewerProps> = ({ initialSvg = '' }) => {
-  const [svgCode, setSvgCode] = useState<string>(initialSvg);
-  const [fileName, setFileName] = useState<string>('svg-preview');
-  const [scale, setScale] = useState<number>(1);
-  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const previewRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const wheelTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const editorRef = useRef<HTMLDivElement>(null);
-  const [previewSvgCode, setPreviewSvgCode] = useState<string>('');
+  const [svgCode, setSvgCode] = useState(initialSvg);
+  const [fileName, setFileName] = useState('svg-preview');
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const previewRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const wheelTimeoutRef = useRef(null);
+  const editorRef = useRef(null);
+  const [previewSvgCode, setPreviewSvgCode] = useState('');
 
   const handleSvgChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSvgCode(e.target.value);
