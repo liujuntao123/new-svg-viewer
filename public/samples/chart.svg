@@ -1,0 +1,33 @@
+<svg width="250" height="150" viewBox="0 0 250 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="250" height="150" rx="8" fill="#F3F4F6"/>
+  <line x1="30" y1="30" x2="30" y2="120" stroke="#374151" stroke-width="2"/>
+  <line x1="30" y1="120" x2="220" y2="120" stroke="#374151" stroke-width="2"/>
+  
+  <circle cx="60" cy="90" r="4" fill="#EF4444"/>
+  <circle cx="100" cy="70" r="4" fill="#EF4444"/>
+  <circle cx="140" cy="50" r="4" fill="#EF4444"/>
+  <circle cx="180" cy="60" r="4" fill="#EF4444"/>
+  <circle cx="220" cy="40" r="4" fill="#EF4444"/>
+  
+  <path d="M60 90 L100 70 L140 50 L180 60 L220 40" stroke="#EF4444" stroke-width="2"/>
+  
+  <circle cx="60" cy="100" r="4" fill="#3B82F6"/>
+  <circle cx="100" cy="90" r="4" fill="#3B82F6"/>
+  <circle cx="140" cy="80" r="4" fill="#3B82F6"/>
+  <circle cx="180" cy="95" r="4" fill="#3B82F6"/>
+  <circle cx="220" cy="75" r="4" fill="#3B82F6"/>
+  
+  <path d="M60 100 L100 90 L140 80 L180 95 L220 75" stroke="#3B82F6" stroke-width="2"/>
+  
+  <text x="30" y="20" font-family="Arial" font-size="12" fill="#111827">Chart Example</text>
+  <text x="20" y="30" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="end">100</text>
+  <text x="20" y="60" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="end">75</text>
+  <text x="20" y="90" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="end">50</text>
+  <text x="20" y="120" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="end">25</text>
+  
+  <text x="60" y="135" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="middle">Jan</text>
+  <text x="100" y="135" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="middle">Feb</text>
+  <text x="140" y="135" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="middle">Mar</text>
+  <text x="180" y="135" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="middle">Apr</text>
+  <text x="220" y="135" font-family="Arial" font-size="8" fill="#6B7280" text-anchor="middle">May</text>
+</svg> 
