@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, MutableRefObject } from 'react';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
@@ -42,7 +42,43 @@ const SVGViewer: React.FC<SVGViewerProps> = ({ initialSvg = '' }) => {
   const fileInputRef = useRef(null);
   const wheelTimeoutRef = useRef(null);
   const editorRef = useRef(null);
+  const viewRef = useRef(null);
   const [previewSvgCode, setPreviewSvgCode] = useState('');
+
+  // 确保 SVG 包含宽度和高度属性
+  const ensureSvgDimensions = (svgCode: string): string => {
+    if (!svgCode || !isValidSvg(svgCode)) return svgCode;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgCode, 'image/svg+xml');
+    const svgElement = doc.querySelector('svg');
+
+    if (!svgElement) return svgCode;
+
+    // 如果没有 width 或 height 属性，并且有 viewBox
+    if ((!svgElement.hasAttribute('width') || !svgElement.hasAttribute('height')) && svgElement.hasAttribute('viewBox')) {
+      const viewBox = svgElement.getAttribute('viewBox')?.split(' ').map(Number);
+      if (viewBox && viewBox.length === 4) {
+        const [, , width, height] = viewBox;
+        if (!svgElement.hasAttribute('width')) {
+          svgElement.setAttribute('width', width.toString());
+        }
+        if (!svgElement.hasAttribute('height')) {
+          svgElement.setAttribute('height', height.toString());
+        }
+      }
+    }
+
+    // 如果仍然没有宽度和高度，设置默认值
+    if (!svgElement.hasAttribute('width')) {
+      svgElement.setAttribute('width', '300');
+    }
+    if (!svgElement.hasAttribute('height')) {
+      svgElement.setAttribute('height', '300');
+    }
+
+    return new XMLSerializer().serializeToString(doc);
+  };
 
   const handleSvgChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSvgCode(e.target.value);
@@ -178,30 +214,45 @@ const SVGViewer: React.FC<SVGViewerProps> = ({ initialSvg = '' }) => {
   };
 
   useEffect(() => {
+    if (!editorRef.current) return;
+
     const state = EditorState.create({
       doc: svgCode,
       extensions: [
         ...extensions,
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
-            setPreviewSvgCode(update.state.doc.toString());
+            const newSvgCode = update.state.doc.toString();
+            setSvgCode(newSvgCode);
+            setPreviewSvgCode(ensureSvgDimensions(newSvgCode));
           }
         })
       ]
     });
 
-    const view = new EditorView({
+    viewRef.current = new EditorView({
       state,
-      parent: editorRef.current!,
+      parent: editorRef.current,
     });
 
-    // 只在 svgCode 变化时更新编辑器的文档
-    view.dispatch({
-      changes: { from: 0, to: view.state.doc.length, insert: svgCode }
-    });
+    return () => {
+      if (viewRef.current) {
+        viewRef.current.destroy();
+      }
+    };
+  }, []); // 只在组件挂载时运行一次
 
-    return () => view.destroy();
-  }, [svgCode]); // 只在 svgCode 变化时更新
+  // 当外部 svgCode 改变时更新编辑器内容
+  useEffect(() => {
+    if (viewRef.current) {
+      const currentContent = viewRef.current.state.doc.toString();
+      if (currentContent !== svgCode) {
+        viewRef.current.dispatch({
+          changes: { from: 0, to: viewRef.current.state.doc.length, insert: svgCode }
+        });
+      }
+    }
+  }, [svgCode]);
 
   return (
     <div className="w-[1280px] h-full  mx-auto flex flex-col gap-4">
@@ -274,7 +325,7 @@ const SVGViewer: React.FC<SVGViewerProps> = ({ initialSvg = '' }) => {
           </div>
           <div 
             ref={previewRef}
-            className="flex-1 p-4 border rounded-md bg-[url('/checkerboard.svg')] flex items-center justify-center overflow-hidden relative h-[400px] min-h-[400px] min-w-[300px]"
+            className="flex-1 p-4 border rounded-md bg-white flex items-center justify-center overflow-hidden relative h-[400px] min-h-[400px] min-w-[300px]"
           >
             {previewSvgCode ? (
               <div 
