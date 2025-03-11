@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, MutableRefObject } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toPng, toJpeg, toSvg } from 'html-to-image';
 import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
